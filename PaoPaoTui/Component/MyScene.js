@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, NavigatorIOS, Text, View } from 'react-native';
 import { TaskList } from '../Component/TaskList'
 import { CreateTaskScreen } from '../Component/CreateTaskScreen'
+import { store } from "../"
 
 export default class NavigatorIOSApp extends React.Component {
   render() {
@@ -40,6 +41,7 @@ class MyScene extends React.Component {
       title: "Task List",
       passProps: {index: nextIndex}
     });
+    console.log(store.getState().todos)
   }
 
   _showCreateTaskPage() {
@@ -62,7 +64,9 @@ class MyScene extends React.Component {
           onPress={this._showCreateTaskPage}
           title="Create New Task"
         />
+        <Text>Task List</Text>
       </View>
+      
     )
   }
 }
