@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, NavigatorIOS, Text, View, TextInput } from 'react-native';
 import { addTask } from '../core/flux/actions/'
 import { store } from "../"
+import { TaskList } from '../Component/TaskList'
 
 
 export class CreateTaskScreen extends React.Component {
@@ -40,6 +41,10 @@ export class CreateTaskScreen extends React.Component {
   createTask() {
     store.dispatch(addTask(this.state.taskDescription))
     console.log(store.getState().todos)
+    this.props.navigator.push({
+        component: TaskList,
+        title: "Task List"
+      });
   }
 
 }
