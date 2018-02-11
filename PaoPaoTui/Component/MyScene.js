@@ -5,7 +5,7 @@ import { TaskList } from '../Component/TaskList'
 import { CreateTaskScreen } from '../Component/CreateTaskScreen'
 import { store } from "../"
 
-export default class NavigatorIOSApp extends React.Component {
+export class NavigatorIOSApp extends React.Component {
   render() {
     return (
       <NavigatorIOS
@@ -20,7 +20,7 @@ export default class NavigatorIOSApp extends React.Component {
   }
 }
 
-class MyScene extends React.Component {
+class WelcomeScreen extends React.Component {
   static propTypes = {
     route: PropTypes.shape({
       title: PropTypes.string.isRequired
@@ -53,6 +53,21 @@ class MyScene extends React.Component {
     });
   }
 
+  getMoviesFromApiAsync() {
+      return fetch('http://mis.logpie.com/logpie/products/category', {
+        method: 'GET',
+        headers: {
+          Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+          'Content-Type': 'application/json;charset=UTF-8',
+        }})
+        .then((response) =>
+          console.log(response.json())
+        )
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
   render() {
     return (
       <View style={{flex: 1, backgroundColor: 'powderblue', paddingTop: 64}} >
@@ -63,6 +78,10 @@ class MyScene extends React.Component {
         <Button
           onPress={this._showCreateTaskPage}
           title="Create New Task"
+        />
+        <Button
+          onPress={this.getMoviesFromApiAsync}
+          title="API Call"
         />
         <Text>Task List</Text>
       </View>

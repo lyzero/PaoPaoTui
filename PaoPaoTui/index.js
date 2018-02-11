@@ -1,5 +1,5 @@
 import { AppRegistry } from 'react-native';
-import MyScene from './Component/MyScene';
+import WelcomeScreen from './Component/WelcomeScreen';
 import { createStore } from 'redux'
 import reducer from './core/flux/store'
 
@@ -7,4 +7,4 @@ import reducer from './core/flux/store'
 export const store = createStore(reducer)
 
 
-AppRegistry.registerComponent('PaoPaoTui', () => MyScene);
+AppRegistry.registerComponent('PaoPaoTui', () => WelcomeScreen);
