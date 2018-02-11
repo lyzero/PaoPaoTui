@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, NavigatorIOS, Text, View } from 'react-native';
-import { TaskList } from '../Component/TaskList'
 import { CreateTaskScreen } from '../Component/CreateTaskScreen'
 import { store } from "../"
 import {LoginButton} from 'react-native-fbsdk'
@@ -11,8 +10,8 @@ export default class NavigatorIOSApp extends React.Component {
     return (
       <NavigatorIOS
         initialRoute={{
-          component: MyScene,
-          title: 'Home',
+          component: WelcomeScreen,
+          title: 'Welcome',
           passProps: {index: 1},
         }}
         style={{flex: 1}}
@@ -21,7 +20,7 @@ export default class NavigatorIOSApp extends React.Component {
   }
 }
 
-class MyScene extends React.Component {
+class WelcomeScreen extends React.Component {
   static propTypes = {
     route: PropTypes.shape({
       title: PropTypes.string.isRequired
@@ -31,12 +30,12 @@ class MyScene extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    this._showCreateTaskPage = this._showCreateTaskPage.bind(this);
+    this.onloginSuccess = this.onloginSuccess.bind(this);
   }
 
 
-  _showCreateTaskPage() {
-   
+  onloginSuccess() {
+    alert("Login was successful with permissions: " + result.grantedPermissions)
   }
 
 
@@ -44,17 +43,7 @@ class MyScene extends React.Component {
   render() {
     return (
       <View style={{flex: 1, backgroundColor: 'powderblue', paddingTop: 64}} >
-        <Button
-          onPress={this._showCreateTaskPage}
-          title="Create New Task"
-        />
-
-        <Text>Login With Us</Text>
-        <Button
-        onPress={this._showCreateTaskPage}
-        title="Continue with fb"
-        color="#4267B2"
-      />
+      <Text>Login With Us</Text>
       <LoginButton
           publishPermissions={["publish_actions"]}
           onLoginFinished={
@@ -64,12 +53,11 @@ class MyScene extends React.Component {
               } else if (result.isCancelled) {
                 alert("Login was cancelled");
               } else {
-                alert("Login was successful with permissions: " + result.grantedPermissions)
+                onloginSuccess()
               }
             }
           }
           onLogoutFinished={() => alert("User logged out")}/>
-
       </View>
       
     )
