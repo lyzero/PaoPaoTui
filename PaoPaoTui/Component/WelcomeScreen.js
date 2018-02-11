@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, NavigatorIOS, Text, View } from 'react-native';
 import { CreateTaskScreen } from '../Component/CreateTaskScreen'
 import { store } from "../"
-import {LoginButton} from 'react-native-fbsdk'
+import { LoginButton, LoginManager, AccessToken } from 'react-native-fbsdk'
 
 export default class NavigatorIOSApp extends React.Component {
   render() {
@@ -12,9 +12,9 @@ export default class NavigatorIOSApp extends React.Component {
         initialRoute={{
           component: WelcomeScreen,
           title: 'Welcome',
-          passProps: {index: 1},
+          passProps: { index: 1 },
         }}
-        style={{flex: 1}}
+        style={{ flex: 1 }}
       />
     )
   }
@@ -31,20 +31,37 @@ class WelcomeScreen extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.onloginSuccess = this.onloginSuccess.bind(this);
+    this.onLoginManager = this.onLoginManager.bind(this);
   }
 
-
-  onloginSuccess() {
-    alert("Login was successful with permissions: " + result.grantedPermissions)
+  onloginSuccess(result) {
+    alert("Login was successful with permissions: " + result.grantedPermissions, result.accessToken);
   }
 
+  onLoginManager(){
+    AccessToken.getCurrentAccessToken().then(
+      (data) => {
+        if(data != null) {
+          alert(data.accessToken.toString());
+        } else{
+          alert("User haven't login yet")
+        }
+        
+      }
+    )
+  }
 
 
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: 'powderblue', paddingTop: 64}} >
-      <Text>Login With Us</Text>
-      <LoginButton
+      <View style={{ flex: 1, backgroundColor: 'powderblue', paddingTop: 64 }} >
+        <Text>Login With Us</Text>
+        <Button
+          onPress={this.onLoginManager}
+          title="View All Tasks"
+        >
+        </Button>
+        <LoginButton
           publishPermissions={["publish_actions"]}
           onLoginFinished={
             (error, result) => {
@@ -53,13 +70,13 @@ class WelcomeScreen extends React.Component {
               } else if (result.isCancelled) {
                 alert("Login was cancelled");
               } else {
-                onloginSuccess()
+                this.onloginSuccess(result)
               }
             }
           }
-          onLogoutFinished={() => alert("User logged out")}/>
+          onLogoutFinished={() => alert("User logged out")} />
       </View>
-      
+
     )
   }
 }
